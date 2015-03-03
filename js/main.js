@@ -1,16 +1,15 @@
  var 
 	minColWidth = 200,
 	numCols,
-	items,
-	docFrag
+	itemsContainer,
+	itemNodes
 ;
 
 run();
 
 function run() {
-	items = document.querySelector('.items');
-	docFrag = document.createDocumentFragment();
-	[].slice.call(items.children, 0).map(docFrag.appendChild.bind(docFrag));
+	itemsContainer = document.querySelector('.items');
+	itemNodes = [].slice.call(itemsContainer.children, 0);
 	
 	numCols = 99;
 	window.addEventListener('resize', computeNewCols, false);
@@ -27,22 +26,22 @@ function computeNewCols() {
 }
 
 function buildCols(num) {
-	items.innerHTML = '';
+	itemsContainer.innerHTML = '';
 	
 	if (num === 1)
-		items.className = 'items';
+		itemsContainer.className = 'items';
 	else
-		items.className = 'items col-' + num;
+		itemsContainer.className = 'items col-' + num;
 	
 	var colNodes = [], i, col;
 	for (i = 0; i < num; i++) {
 		col = document.createElement('ul');
 		col.className = 'column';
-		items.appendChild(col);
+		itemsContainer.appendChild(col);
 		colNodes.push(col);
 	}
 	
-	for (i = 0; i < docFrag.children.length; i++)
-		colNodes[i % colNodes.length].appendChild(docFrag.children[i].cloneNode(true));
-	
+	itemNodes.forEach(function(n, i) {
+		colNodes[i % colNodes.length].appendChild(n);
+	});
 }
