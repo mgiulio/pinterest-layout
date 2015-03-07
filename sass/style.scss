@@ -1,24 +1,52 @@
 @import url(http://codebase.dev/normalize/normalize.css);
 
+$icon-size: 40px;
+
 html {
 	min-heigth: 100%;
 	background-color: #ccc;
 }
 
 header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	box-sizing: border-box;
+	
+	padding: 10px 15px;
+
 	background-color: #fff;
-	padding: 20px 10px;
 	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.3);
 }
-header .title , header .abstract{
-	text-align: center;
-	margin: 0;
+header:after {
+	clear: both;
+	content: '';
+	display: table;
 }
-header .abstract {
-	font-style: italic;
+header .title {
+	margin: 0;
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: normal;
+	
+	color: gray;
+}
+header .links {
+	margin-top: 10px;
+	text-align: center;
+	font-size: 0;
+}
+header .links a {
+	display: inline-block;
+	margin-left: 5px;
+}
+header .links a:focus {
+	outline: none;
 }
 
 .items {
+	margin-top: 80px;
 	padding: 0;
 }
 .items:after {
@@ -93,7 +121,7 @@ header .abstract {
 		content: '#';
 	}
 }
-@media screen and(max-width: 400px) {
+@media screen and (max-width: 400px) {
 	.item .abstract {
 		font-size: 1.4em;
 	}
@@ -102,10 +130,30 @@ header .abstract {
 	}
 }
 
-footer {
-	background: #484848;
-	color: #f0f0f0;
+@media screen and (min-width: 620px) {
+	header .title {
+		float: left;
+		height: $icon-size;
+		line-height: $icon-size;
+		font-size: 1.5em;
+	}
+	header .links {
+		float: right;
+		margin: 0;
+	}
 }
-footer h1 {
-	color: orange;
+
+/*
+ * Icon system
+ */
+ .icon {
+	width: $icon-size;
+	height: $icon-size;
+	//fill?
+ }
+ .icon.twitter {
+	fill: #7FFFD4;
+ }
+ .icon.github {
+	fill: #FF7F50;
 }
