@@ -1,26 +1,50 @@
 module.exports = function (grunt) {
     grunt.initConfig({
 		sass: {
-			dist: {
+			main: {
 				options: {
-					style: 'expanded'
+					style: 'expanded',
+					sourcemap: 'none'
 				},
 				files: {
-					'css/style.css': 'sass/style.scss'
+					'tmp/style.css': 'src/style.scss'
 				}
 			}
 		},
-        autoprefixer: {
-            dist: {
-                files: {
-                    'css/style.css': 'css/style.css'
-                }
-            }
-        }
+		uglify: {
+			main: {
+				files: {
+					'tmp/script.min.js': 'src/script.js'
+				}
+			}
+		},
+		copy: {
+			dev: {
+				files: {
+					'dest/index.html': 'src/index.html',
+					'dest/style.css': 'tmp/style.css',
+					'dest/script.js': 'src/script.js',
+					'dest/sprite.svg': 'src/sprite.svg',
+				}
+			},
+			rel: {
+				files: {
+					'dest/index.html': 'src/index.html',
+					'dest/style.css': 'tmp/style.css',
+					'dest/script.js': 'tmp/script.min.js',
+					'dest/sprite.svg': 'src/sprite.svg'
+				}
+			}
+		}
     });
 	
 	grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-autoprefixer');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	
-	grunt.registerTask('default', ['sass'/* , 'autoprefixer' */]);
+	grunt.registerTask('cleandest', 'Cleanup dest directory', function() {
+		grunt.file.delete('dest/');
+	});
+	grunt.registerTask('default', ['sass', 'cleandest', 'copy:dev']);
+	grunt.registerTask('rel', ['sass', 'uglify', 'cleandest', 'copy:rel']);
 };
