@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 					'dest/sprite.svg': 'src/sprite.svg',
 				}
 			},
-			rel: {
+			dest: {
 				files: {
 					'dest/index.html': 'src/index.html',
 					'dest/style.css': 'tmp/style.css',
@@ -46,5 +46,5 @@ module.exports = function (grunt) {
 		grunt.file.delete('dest/');
 	});
 	grunt.registerTask('default', ['sass', 'cleandest', 'copy:dev']);
-	grunt.registerTask('rel', ['sass', 'uglify', 'cleandest', 'copy:rel']);
+	grunt.registerTask('dest', ['sass', 'uglify', 'cleandest', 'copy:dest']);
 };
