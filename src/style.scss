@@ -1,4 +1,4 @@
-@import 'normalize';
+@import 'lib/normalize';
 
 $icon-size: 40px;
 
@@ -31,18 +31,6 @@ header .title {
 	font-weight: normal;
 	
 	color: gray;
-}
-header .links {
-	margin-top: 10px;
-	text-align: center;
-	font-size: 0;
-}
-header .links a {
-	display: inline-block;
-	margin-left: 5px;
-}
-header .links a:focus {
-	outline: none;
 }
 
 .items {
@@ -137,23 +125,5 @@ header .links a:focus {
 		line-height: $icon-size;
 		font-size: 1.5em;
 	}
-	header .links {
-		float: right;
-		margin: 0;
-	}
 }
 
-/*
- * Icon system
- */
- .icon {
-	width: $icon-size;
-	height: $icon-size;
-	//fill?
- }
- .icon.twitter {
-	fill: #7FFFD4;
- }
- .icon.github {
-	fill: #FF7F50;
-}

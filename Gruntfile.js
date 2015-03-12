@@ -11,28 +11,30 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		concat: {
+			main: {  
+				src: ['src/lib/*.js', 'src/*.js'],
+				dest: 'tmp/script.js'
+			}
+		},
 		uglify: {
+			options: {
+				sourceMap: true
+			},
 			main: {
 				files: {
-					'tmp/script.min.js': 'src/script.js'
+					'tmp/script.js': 'tmp/script.js'
 				}
 			}
 		},
 		copy: {
-			dev: {
-				files: {
-					'dest/index.html': 'src/index.html',
-					'dest/style.css': 'tmp/style.css',
-					'dest/script.js': 'src/script.js',
-					'dest/sprite.svg': 'src/sprite.svg',
-				}
-			},
 			dest: {
 				files: {
 					'dest/index.html': 'src/index.html',
 					'dest/style.css': 'tmp/style.css',
-					'dest/script.js': 'tmp/script.min.js',
-					'dest/sprite.svg': 'src/sprite.svg'
+					'dest/script.js': 'tmp/script.js',
+					'dest/sprite.svg': 'src/sprite.svg',
+					'dest/script.js.map': 'tmp/script.js.map'
 				}
 			}
 		}
@@ -40,11 +42,14 @@ module.exports = function (grunt) {
 	
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	
-	grunt.registerTask('cleandest', 'Cleanup dest directory', function() {
+	grunt.registerTask('clean', 'Cleanup tmp and dest directories', function() {
+		grunt.file.delete('tmp/');
 		grunt.file.delete('dest/');
 	});
-	grunt.registerTask('default', ['sass', 'cleandest', 'copy:dev']);
-	grunt.registerTask('dest', ['sass', 'uglify', 'cleandest', 'copy:dest']);
+	
+	grunt.registerTask('default', ['clean', 'sass', 'concat', 'copy']);
+	grunt.registerTask('release', ['clean', 'sass', 'concat', 'uglify', 'copy']);
 };
