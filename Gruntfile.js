@@ -33,7 +33,6 @@ module.exports = function (grunt) {
 					'dest/index.html': 'src/index.html',
 					'dest/style.css': 'tmp/style.css',
 					'dest/script.js': 'tmp/script.js',
-					'dest/sprite.svg': 'src/sprite.svg',
 					'dest/script.js.map': 'tmp/script.js.map'
 				}
 			}
