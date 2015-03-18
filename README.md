@@ -6,22 +6,22 @@ This is an implementation of a masonry layout inspired by [Pinterest](http://www
 			
 The items(*pins/cards*) must be displayed left-to-right, top-to-bottom according to their order in the page markup.
 
-The number of used columns varies depending on the available viewport width based on a target column width of 200px, and the 
-width of a column is fluid. So:
+The number of used columns must vary depending on the available viewport width and a target column width, and the 
+width of a column is fluid. So, for a target column width of 200px:
 					
 * in the range [0, 399] there is only one column, with 100% width
 * in the range [400, 599] there are two columns, each with 50% width.
 * in the range [600, 699] there are three columns, each with 1/3 of the viewport width
 * ... and so on ...
-				
+
 # CSS-only Solutions
 				
-The columns requirement could be easily meet with [CSS MultiColumns], but then the items are not arranged in the wanter display order but 
-top-to-bottom, left-to-right, like in te columns of a newspaper.
+The columns requirement could be easily met with the `column-width` property provided by the [CSS Multi-column Layout Module](http://www.w3.org/TR/css3-multicol/) (`column-width: 200px`), but then the items are not arranged in the desidered display order but 
+top-to-bottom, left-to-right, flowing like in the columns of a newspaper.
 			
-Flexbox doesn't semm to help, because it mantains regoral row lines as in inline formatting.
+Flexbox doesn't seem to help, because with `flow-direction: column` we'd have the same flowing isses as with CSS Multi-columns, and `flow-direction: row` doesn't allow to vertically pack the pins, having a behaviour similar to the positioning of boxes in an inline formatting context.
 								
-# JavaScript solution
+# JavaScript Solution
 	
 If we have this markup for the items:
 
@@ -41,7 +41,7 @@ If we have this markup for the items:
 </ul>
 ```				
 			
-and with this CSS:
+and this CSS(Sass):
 			
 ```CSS
 .items .column {
@@ -52,14 +52,14 @@ and with this CSS:
 	box-sizing: border-box;
 }
 
-@for $i from 2 through 16 {
+@for $i from 2 through 16/* arbitrary max value */ {
 	.items.col-#{$i} .column {
 		width: 1 / $i * 100%;
 	}
 }
 ```
 				
-then a first idea is to manually create and manage the columns with the DOM manipulations and ditributing the items between them in the required order:
+then a first idea is to listen to the window resize event, compute the number of columns for the current viewport width and, if necessary, create them and redistribute the items in the required order:
 	
 ```JavaScript
 var 
@@ -109,16 +109,8 @@ function buildCols(num) {
 		colNodes[i % colNodes.length].appendChild(n);
 	});
 }
+```
 			
-It works but a disvantage is that we started with a list in the markup and now we have n of them, with the items <em>jumping</em> around them. 
-So we have lost the original markup structure and it semanticity.
+It works but a drawback is that we started with a list in the markup and now we have `n` of them, with the items *jumping* around them, losing the original markup structure.
 		
-To avoid this issue and preserve the markup I think the only way it is to use absolutly positioning items(*coming soon, I hope*).
-			
-# Some code comments
-				
-VanillaJS
-
-IE innerHTML shim
-			
-No need for window resize throttling
+To avoid this issue and preserve the markup, in the next iteration of this demo/exercise I'll try with absolute positioning, reusing some of the code developed here.
